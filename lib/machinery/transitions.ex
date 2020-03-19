@@ -5,22 +5,12 @@ defmodule Machinery.Transitions do
   It's meant to be run by a supervisor.
   """
 
-  use GenServer
   alias Machinery.Transition
 
   @not_declated_error "Transition to this state isn't declared."
 
-  def init(args) do
-    {:ok, args}
-  end
-
   @doc false
-  def start_link(opts) do
-    GenServer.start_link(__MODULE__, :ok, opts)
-  end
-
-  @doc false
-  def handle_call({:run, struct, state_machine_module, next_state}, _from, states) do
+  def transition_to(struct, state_machine_module, next_state) do
     initial_state = state_machine_module._machinery_initial_state()
     transitions = state_machine_module._machinery_transitions()
     state_field = state_machine_module._field()
@@ -53,6 +43,6 @@ defmodule Machinery.Transitions do
       else
         {:error, @not_declated_error}
       end
-    {:reply, response, states}
+    response
   end
 end
