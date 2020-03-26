@@ -22,23 +22,6 @@ defmodule MachineryTest.Helper do
     Application.put_env(:machinery, :repo, TestRepo)
     Application.put_env(:machinery, :interface, enable)
 
-    capture_log(fn ->
-      restart_machinery()
-    end)
-
     :ok
-  end
-
-  @doc false
-  def restart_machinery() do
-    supervisor_pid = Process.whereis(Machinery.Supervisor)
-    Process.monitor(supervisor_pid)
-    Process.exit(supervisor_pid, :kill)
-
-    receive do
-      _ ->
-        :timer.sleep(5)
-        Application.start(:machinery)
-    end
   end
 end

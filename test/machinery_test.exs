@@ -153,12 +153,6 @@ defmodule MachineryTest do
     assert {:ok, _} = Machinery.transition_to(struct, TestStateMachineWithGuard, "partial")
   end
 
-  @tag :capture_log
-  test "Machinery.Transitions GenServer should be started under the Machinery.Supervisor" do
-    transitions_pid = Process.whereis(Machinery.Transitions)
-    assert Process.alive?(transitions_pid)
-  end
-
   test "Should use default state name if not specified" do
     struct = %TestDefaultFieldStruct{state: "created"}
 
